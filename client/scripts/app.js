@@ -88,7 +88,7 @@ var postMessage = function(userName, message, roomname) {
     data: JSON.stringify({username: userName, text: message, roomname: roomname}),
     contentType: 'application/json',
     success: function (data) {
-      console.log("success");
+      // console.log("success");
     },
     error: function (data) {
       console.log(data);
