@@ -10,12 +10,11 @@ var getUserName = function() {
 
 var getMessages = function(){$.ajax({
     // always use this url
-    url: 'http://localhost:3000/classes/messages',
+    url: 'http://127.0.0.1:3000/classes/messages',
     type: 'GET',
     data: JSON,
     contentType: 'application/json',
     success: function (data) {
-      console.log(data);
       updateMessages(data.results);
       updateRooms(data.results.map(function(message){
         return message.roomname;
@@ -84,16 +83,15 @@ var validateInput = function(message){
 var postMessage = function(userName, message, roomname) {
   $.ajax({
     // always use this url
-    url: 'http://localhost:3000/classes/messages',
+    url: 'http://127.0.0.1:3000/classes/messages',
     type: 'POST',
     data: JSON.stringify({username: userName, text: message, roomname: roomname}),
     contentType: 'application/json',
     success: function (data) {
-      console.log(data);
+      console.log("success");
     },
     error: function (data) {
-      // see: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-      console.error('chatterbox: Failed to get message');
+      console.log(data);
     }
   });
 };
@@ -109,7 +107,7 @@ var sendMessage = function() {
 $(document).ready(function() {
   user.name = getUserName();
   getMessages();
-  setTimeout(getMessages,1000);
+  setInterval(getMessages,1000);
 
   //Event Listeners
   $(".submit").on("click", sendMessage);

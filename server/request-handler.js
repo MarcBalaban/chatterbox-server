@@ -26,20 +26,22 @@ var requestHandler = function(request, response) {
 
   if(splitRequest[1] === messageUrl){
 
-    if(request.method === "POST"){
+    if (request.method === 'OPTIONS') {
+      statusCode = 200;
+      response.writeHead(statusCode, headers);
+      response.end();
+    } else if(request.method === "POST"){
       request.on('data', function(msg){
         console.log(msg.toString());
         messageData.push(JSON.parse(msg.toString()));
         statusCode = 201;
-        console.log("got message");
         response.writeHead(statusCode, headers);
-        response.end();
+        response.end('success');
       });
     } else if (request.method === "GET"){
       statusCode = 200;
       response.writeHead(statusCode, headers);
       response.end('{"results": ' + JSON.stringify(messageData)+ '}');
-      // console.log(response._responseCode, response._ended);
     }
 
   } else {
@@ -60,6 +62,7 @@ var requestHandler = function(request, response) {
 // Another way to get around this restriction is to serve you chat
 // client from this domain by setting up static file serving.
 var defaultCorsHeaders = {
+  "Access-Control-Allow-Credentials": true,
   "access-control-allow-origin": "*",
   "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
   "access-control-allow-headers": "content-type, accept",
