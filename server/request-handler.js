@@ -15,19 +15,23 @@ var messageData = [];
 
 var requestHandler = function(request, response) {
 
-  var messageUrl = "/classes/messages";
+  var messageUrl = "classes";
+  // var testServerUrl = "/classes/room1";
   var statusCode;
   console.log("Serving request type " + request.method + " for url " + request.url);
   var headers = defaultCorsHeaders;
   headers['Content-Type'] = "application/json";
+  var requestUrl = request.url;
+  var splitRequest = requestUrl.split("/");
 
-  if(request.url === messageUrl){
+  if(splitRequest[1] === messageUrl){
 
     if(request.method === "POST"){
       request.on('data', function(msg){
         console.log(msg.toString());
         messageData.push(JSON.parse(msg.toString()));
         statusCode = 201;
+        console.log("got message");
         response.writeHead(statusCode, headers);
         response.end();
       });
@@ -35,6 +39,7 @@ var requestHandler = function(request, response) {
       statusCode = 200;
       response.writeHead(statusCode, headers);
       response.end('{"results": ' + JSON.stringify(messageData)+ '}');
+      // console.log(response._responseCode, response._ended);
     }
 
   } else {
@@ -61,6 +66,6 @@ var defaultCorsHeaders = {
   "access-control-max-age": 10 // Seconds.
 };
 
-module.exports = requestHandler;
+exports.requestHandler = requestHandler;
 
 

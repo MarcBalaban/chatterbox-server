@@ -8,17 +8,6 @@ var getUserName = function() {
 };
 
 
-/* Add friend function:
-
-var addFriend = function() {
-  var friend = $(this).val();
-  var friendList = user.friends;
-  if( friendList.indexOf( friend ) === -1) {
-    friendList.push(friend);
-  }
-};
-*/
-
 var getMessages = function(){$.ajax({
     // always use this url
     url: 'http://localhost:3000/classes/messages',
@@ -26,14 +15,13 @@ var getMessages = function(){$.ajax({
     data: JSON,
     contentType: 'application/json',
     success: function (data) {
-
-      // updateMessages(data.results);
-      // updateRooms(data.results.map(function(message){
-      //   return message.roomname;
-      // }));
+      console.log(data);
+      updateMessages(data.results);
+      updateRooms(data.results.map(function(message){
+        return message.roomname;
+      }));
     },
     error: function (data) {
-      // see: https://developer.mozilla.org/en-US/docs/Web/API/console.error
       console.error('chatterbox: Failed to get message');
     }
   });
@@ -96,7 +84,7 @@ var validateInput = function(message){
 var postMessage = function(userName, message, roomname) {
   $.ajax({
     // always use this url
-    url: 'https://api.parse.com/1/classes/chatterbox',
+    url: 'http://localhost:3000/classes/messages',
     type: 'POST',
     data: JSON.stringify({username: userName, text: message, roomname: roomname}),
     contentType: 'application/json',
@@ -121,7 +109,7 @@ var sendMessage = function() {
 $(document).ready(function() {
   user.name = getUserName();
   getMessages();
-  setInterval(getMessages,20000);
+  setTimeout(getMessages,1000);
 
   //Event Listeners
   $(".submit").on("click", sendMessage);
