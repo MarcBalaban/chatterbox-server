@@ -10,11 +10,13 @@ var getUserName = function() {
 
 var getMessages = function(){$.ajax({
     // always use this url
-    url: 'http://127.0.0.1:3000/classes/messages',
+    // url: 'http://127.0.0.1:1337/classes/messages',
+    url: 'http://10.8.29.248:1337/classes/messages',
     type: 'GET',
     data: JSON,
     contentType: 'application/json',
     success: function (data) {
+      data = JSON.parse(data);
       updateMessages(data.results);
       updateRooms(data.results.map(function(message){
         return message.roomname;
@@ -83,7 +85,8 @@ var validateInput = function(message){
 var postMessage = function(userName, message, roomname) {
   $.ajax({
     // always use this url
-    url: 'http://127.0.0.1:3000/classes/messages',
+    // url: 'http://127.0.0.1:1337/classes/messages',
+    url: 'http://10.8.29.248:1337/classes/messages',
     type: 'POST',
     data: JSON.stringify({username: userName, text: message, roomname: roomname}),
     contentType: 'application/json',
